@@ -1,3 +1,5 @@
+SQL SCRIPT VOOR IN POSTGRES:
+
 CREATE TABLE "profile" (
 	"profile_id" serial NOT NULL,
 	"order.count" varchar(45) NOT NULL,
