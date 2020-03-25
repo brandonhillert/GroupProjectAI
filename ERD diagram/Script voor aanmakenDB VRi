@@ -1,0 +1,106 @@
+CREATE TABLE IF NOT EXISTS "profile" (
+	"id" varchar(45) NOT NULL,
+	"recommendation_segment" varchar(45) NOT NULL,
+	CONSTRAINT "profile_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "session" (
+	"id" varchar(45) NOT NULL,
+	"buid" varchar(45) NOT NULL,
+	"has_sale" varchar(45) NOT NULL,
+	"segment" varchar(45) NOT NULL,
+	"prefences" varchar(45) NOT NULL,
+	"profile_id" varchar(45) NOT NULL,
+	CONSTRAINT "session_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "preference_session" (
+	"id" serial NOT NULL,
+	"session_id" varchar(45) NOT NULL,
+	"category_idcategory" integer NOT NULL,
+	CONSTRAINT "preference_session_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "order_session" (
+	"id" serial NOT NULL,
+	"session_id" varchar(45) NOT NULL,
+	"product_id" varchar(45) NOT NULL,
+	CONSTRAINT "order_session_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "brand" (
+	"idBrand" serial NOT NULL,
+	"brandnaam" varchar(45) NOT NULL,
+	CONSTRAINT "brand_pk" PRIMARY KEY ("idBrand")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "product" (
+	"id" varchar(45) NOT NULL,
+	"selling_price" integer NOT NULL,
+	"brand_idBrand" integer NOT NULL,
+	"gender_idgender" integer NOT NULL,
+	"herhaalaankoop" varchar(45) NOT NULL,
+	"catergory_idcatergory" integer NOT NULL,
+	"data" varchar(45) NOT NULL,
+	CONSTRAINT "product_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "gender" (
+	"id_gender" serial NOT NULL,
+	"gendernaam" varchar(45) NOT NULL,
+	CONSTRAINT "gender_pk" PRIMARY KEY ("id_gender")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "category" (
+	"idcategory" serial NOT NULL,
+	"category" varchar(45) NOT NULL,
+	CONSTRAINT "category_pk" PRIMARY KEY ("idcategory")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS "subcategory" (
+	"idsubcatergorieën" serial NOT NULL,
+	"sub_category" varchar(45) NOT NULL,
+	"sub_sub_category" varchar(45) NOT NULL,
+	"category_idcategory" integer NOT NULL,
+	CONSTRAINT "subcategory_pk" PRIMARY KEY ("idsubcatergorieën")
+) WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_fk0" FOREIGN KEY ("profile_id") REFERENCES "profile"("id");
+
+ALTER TABLE "preference_session" ADD CONSTRAINT "preference_session_fk0" FOREIGN KEY ("session_id") REFERENCES "session"("id");
+ALTER TABLE "preference_session" ADD CONSTRAINT "preference_session_fk1" FOREIGN KEY ("category_idcategory") REFERENCES "category"("idcategory");
+
+ALTER TABLE "order_session" ADD CONSTRAINT "order_session_fk0" FOREIGN KEY ("session_id") REFERENCES "session"("id");
+ALTER TABLE "order_session" ADD CONSTRAINT "order_session_fk1" FOREIGN KEY ("product_id") REFERENCES "product"("id");
+
+ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("brand_idBrand") REFERENCES "brand"("idBrand");
+ALTER TABLE "product" ADD CONSTRAINT "product_fk1" FOREIGN KEY ("gender_idgender") REFERENCES "gender"("id_gender");
+ALTER TABLE "product" ADD CONSTRAINT "product_fk2" FOREIGN KEY ("catergory_idcatergory") REFERENCES "category"("idcategory");
+
+ALTER TABLE "subcategory" ADD CONSTRAINT "subcategory_fk0" FOREIGN KEY ("category_idcategory") REFERENCES "category"("idcategory");
