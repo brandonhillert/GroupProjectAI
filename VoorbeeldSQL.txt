@@ -1,0 +1,22 @@
+DELETE FROM brand;
+DELETE FROM gender;
+DELETE FROM category;
+DELETE FROM profile;
+DELETE from session;
+
+INSERT INTO profile(id)
+SELECT _id from all_pro;
+
+INSERT INTO brand(brandnaam)
+SELECT DISTINCT brand from all_p;
+
+
+INSERT INTO gender(gendernaam)
+SELECT DISTINCT gender from all_p;
+
+
+INSERT INTO category(category,sub_category,sub_sub_category)
+SELECT DISTINCT category, sub_category,sub_sub_category from all_p;
+
+select * from profile
+limit 100
