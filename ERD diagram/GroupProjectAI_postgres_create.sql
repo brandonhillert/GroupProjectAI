@@ -1,6 +1,8 @@
 CREATE TABLE "profile" (
 	"id" varchar(255) NOT NULL,
 	"recommendation_segment" varchar(45),
+	"recommendations" varchar(255),
+	"buids" varchar(255),
 	CONSTRAINT "profile_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
