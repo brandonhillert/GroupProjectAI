@@ -14,7 +14,7 @@ CREATE TABLE "session" (
 	"id" varchar(255) NOT NULL,
 	"has_sale" varchar(45),
 	"prefences" varchar(45),
-	"profile_id" varchar(255) NOT NULL,
+	"profile_id" varchar(255),
 	"buid" varchar(255),
 	"segment" varchar(255),
 	CONSTRAINT "session_pk" PRIMARY KEY ("id")
