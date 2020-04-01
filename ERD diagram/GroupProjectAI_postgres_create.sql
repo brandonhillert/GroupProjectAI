@@ -90,7 +90,7 @@ CREATE TABLE "category" (
 
 
 
-
+/*
 ALTER TABLE "session" ADD CONSTRAINT "session_fk0" FOREIGN KEY ("profile_id") REFERENCES "profile"("id");
 
 ALTER TABLE "preference_session" ADD CONSTRAINT "preference_session_fk0" FOREIGN KEY ("session_id") REFERENCES "session"("id");
@@ -103,6 +103,6 @@ ALTER TABLE "order_session" ADD CONSTRAINT "order_session_fk1" FOREIGN KEY ("pro
 ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("brand_idBrand") REFERENCES "brand"("idBrand");
 ALTER TABLE "product" ADD CONSTRAINT "product_fk1" FOREIGN KEY ("gender_idgender") REFERENCES "gender"("idgender");
 ALTER TABLE "product" ADD CONSTRAINT "product_fk2" FOREIGN KEY ("catergory_idcatergory") REFERENCES "category"("idcatergory");
-
+*/
 
 
