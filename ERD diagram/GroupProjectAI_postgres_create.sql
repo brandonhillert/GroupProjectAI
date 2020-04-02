@@ -1,6 +1,8 @@
 CREATE TABLE "profile" (
 	"id" varchar(255) NOT NULL,
 	"recommendation_segment" varchar(45),
+	"recommendations" varchar(255),
+	"buids" varchar(255),
 	CONSTRAINT "profile_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -12,7 +14,7 @@ CREATE TABLE "session" (
 	"id" varchar(255) NOT NULL,
 	"has_sale" varchar(45),
 	"prefences" varchar(45),
-	"profile_id" varchar(255) NOT NULL,
+	"profile_id" varchar(255),
 	"buid" varchar(255),
 	"segment" varchar(255),
 	CONSTRAINT "session_pk" PRIMARY KEY ("id")
@@ -90,7 +92,7 @@ CREATE TABLE "category" (
 
 
 
-
+/*
 ALTER TABLE "session" ADD CONSTRAINT "session_fk0" FOREIGN KEY ("profile_id") REFERENCES "profile"("id");
 
 ALTER TABLE "preference_session" ADD CONSTRAINT "preference_session_fk0" FOREIGN KEY ("session_id") REFERENCES "session"("id");
@@ -103,6 +105,6 @@ ALTER TABLE "order_session" ADD CONSTRAINT "order_session_fk1" FOREIGN KEY ("pro
 ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("brand_idBrand") REFERENCES "brand"("idBrand");
 ALTER TABLE "product" ADD CONSTRAINT "product_fk1" FOREIGN KEY ("gender_idgender") REFERENCES "gender"("idgender");
 ALTER TABLE "product" ADD CONSTRAINT "product_fk2" FOREIGN KEY ("catergory_idcatergory") REFERENCES "category"("idcatergory");
-
+*/
 
 
