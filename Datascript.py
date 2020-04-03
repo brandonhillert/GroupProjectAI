@@ -189,9 +189,10 @@ def clearerd():
     cur.execute("DROP TABLE IF EXISTS order_session CASCADE")
 
     cur.execute("CREATE TABLE brand (idBrand serial NOT NULL,brandnaam varchar(45),CONSTRAINT brand_pk PRIMARY KEY (idBrand)) WITH (OIDS=FALSE);")
-    cur.execute("CREATE TABLE category (idcatergory serial NOT NULL,category varchar(45),sub_category varchar(45),sub_sub_category varchar(45),CONSTRAINT category_pk PRIMARY KEY (idcatergory)) WITH (OIDS=FALSE);")
+    cur.execute(
+        "CREATE TABLE category (idcategory serial NOT NULL,category varchar(45),sub_category varchar(45),sub_sub_category varchar(45),CONSTRAINT category_pk PRIMARY KEY (idcategory)) WITH (OIDS=FALSE);")
     cur.execute("CREATE TABLE gender (idgender serial NOT NULL,gendernaam varchar(45),CONSTRAINT gender_pk PRIMARY KEY (idgender)) WITH (OIDS=FALSE);")
-    cur.execute("CREATE TABLE product (id varchar(45) NOT NULL,selling_price integer,brand_idBrand integer,gender_idgender integer,discount varchar(45),catergory_idcatergory integer,CONSTRAINT product_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
+    cur.execute("CREATE TABLE product (id varchar(45) NOT NULL,selling_price integer,brand_idBrand integer,gender_idgender integer,discount varchar(45),category_idcategory integer,CONSTRAINT product_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
     cur.execute("CREATE TABLE profile (id varchar(255) NOT NULL,recommendation_segment varchar(45),recommendations varchar,buids varchar,CONSTRAINT profile_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
     cur.execute("CREATE TABLE session (id varchar(255) NOT NULL,has_sale varchar(45),prefences varchar,profile_id varchar(255),buid varchar,segment varchar(255),CONSTRAINT session_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
     cur.execute("CREATE TABLE preference_session (id serial NOT NULL,session_id varchar(255) NOT NULL, category_idcategory integer NOT NULL, CONSTRAINT preference_session_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
@@ -302,7 +303,7 @@ def queuedata():
         productrecord = [itemid,selling_price,genderid,brandid,itemrecords[0][7],catid]
 
         try:
-            cur.execute("INSERT INTO product(id,selling_price,brand_idbrand,gender_idgender,discount,catergory_idcatergory) VALUES ('{}','{}','{}','{}','{}','{}')".format(productrecord[0],productrecord[1],productrecord[3],productrecord[2],productrecord[4],productrecord[5]))
+            cur.execute("INSERT INTO product(id,selling_price,brand_idbrand,gender_idgender,discount,category_idcategory) VALUES ('{}','{}','{}','{}','{}','{}')".format(productrecord[0],productrecord[1],productrecord[3],productrecord[2],productrecord[4],productrecord[5]))
         except:
             print((productrecord[1]))
             productrecord(type(productrecord[1]))
@@ -314,11 +315,11 @@ def queuedata():
 def fkmaker():
     cur.execute("ALTER TABLE product ADD CONSTRAINT product_fk0 FOREIGN KEY (brand_idBrand) REFERENCES brand(idBrand);")
     cur.execute("ALTER TABLE product ADD CONSTRAINT product_fk1 FOREIGN KEY (gender_idgender) REFERENCES gender(idgender);")
-    cur.execute("ALTER TABLE product ADD CONSTRAINT product_fk2 FOREIGN KEY (catergory_idcatergory) REFERENCES category(idcatergory);")
+    cur.execute("ALTER TABLE product ADD CONSTRAINT product_fk2 FOREIGN KEY (category_idcategory) REFERENCES category(idcategory);")
     cur.execute("ALTER TABLE session ADD CONSTRAINT session_fk0 FOREIGN KEY (profile_id) REFERENCES profile(id);")
 
 def sessiontoprofile():
-    cur.execute("select buid,id from session")
+    cur.execute("select buid,id from session where prefences != 'null'")
     buids = cur.fetchall()
     count = 0
     for buid in buids[:250]:
@@ -342,7 +343,7 @@ def sessiontoprofile():
 client = MongoClient('localhost', 27017)    #MongodB connectie
 db = client.huwebshop
 
-conn = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
+conn = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=kip")
 cur = conn.cursor()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~ code voor product koppeling
