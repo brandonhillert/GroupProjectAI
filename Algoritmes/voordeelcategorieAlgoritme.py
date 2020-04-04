@@ -179,7 +179,7 @@ def createidlink():
     #een functie om een tabel aan temaken
     cur.execute("DROP TABLE IF EXISTS prolink;")
 
-    cur.execute("CREATE TABLE prolink (PID varchar  PRIMARY KEY, "
+    cur.execute("CREATE TABLE voordeelcatalgoritme (PID varchar  PRIMARY KEY, "
                 "pro1 varchar, "
                 "pro2 varchar, "
                 "pro3 varchar, "
@@ -197,17 +197,17 @@ def fillidlinktable():
         recomendedlist = recomendeditems(itemrecords[0][1], itemrecords[0][2], itemrecords[0][3])
         #print("list met recomende id's", [i[0] for i in recomendedlist])
         if len(recomendedlist) == 5:
-            cur.execute("INSERT INTO prolink (PID, pro1, pro2, pro3,pro4,pro5) VALUES ( %s, %s, %s, %s,%s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0],recomendedlist[4][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3,pro4,pro5) VALUES ( %s, %s, %s, %s,%s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0],recomendedlist[4][0]))
         if len(recomendedlist) == 4:
-            cur.execute("INSERT INTO prolink (PID, pro1, pro2, pro3,pro4) VALUES ( %s, %s, %s, %s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3,pro4) VALUES ( %s, %s, %s, %s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0]))
         if len(recomendedlist) == 3:
-            cur.execute("INSERT INTO prolink (PID, pro1, pro2, pro3) VALUES ( %s, %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3) VALUES ( %s, %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0]))
         if len(recomendedlist) == 2:
-            cur.execute("INSERT INTO prolink (PID, pro1, pro2) VALUES ( %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2) VALUES ( %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0]))
         if len(recomendedlist) == 1:
-            cur.execute("INSERT INTO prolink (PID, pro1) VALUES ( %s, %s)",(id, recomendedlist[0][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1) VALUES ( %s, %s)",(id, recomendedlist[0][0]))
         if len(recomendedlist) == 0:
-            cur.execute("INSERT INTO prolink (PID) VALUES ( %s)",(id))
+            cur.execute("INSERT INTO voordeelcatalgoritme (PID) VALUES ( %s)",(id))
     print("finnisched filling product table")
     return
 
