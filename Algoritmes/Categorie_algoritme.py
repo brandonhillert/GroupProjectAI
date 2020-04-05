@@ -71,3 +71,4 @@ for product in lijst_producten:
         print(count, "producten")
 
 print("done with producten")
+conn.commit()
