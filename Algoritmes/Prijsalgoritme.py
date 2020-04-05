@@ -1,10 +1,14 @@
 import psycopg2
 import random
 
+"""
+Gemaakt door: Wijnand van Dijk en Richard Jansen.
+Wijnand van Dijk: Core code
+Richard Jansen: Overzetten naar SQL tabel
+"""
+
 
 def prijs(id,prijs_prod):
-    #prijs_prod = int(input("Geef de prijs van het product: "))
-    #prijs_prod = 100
     if prijs_prod < 101:
         """
         print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(very_cheap)[0],
@@ -63,7 +67,8 @@ def create_prijs_aanbevelingen():
                 'PROD5 varchar);')
     con.commit()
 
-con = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=kip")
+
+con = psycopg2.connect("dbname=postgres user=postgres password=postgres")
 cur = con.cursor()
 
 cur.execute("select id, selling_price from product where selling_price < 101")
