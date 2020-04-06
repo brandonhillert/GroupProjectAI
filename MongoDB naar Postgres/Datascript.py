@@ -353,7 +353,7 @@ def sessiontoprofile():
 client = MongoClient('localhost', 27017)    #MongodB connectie
 db = client.huwebshop
 
-conn = psycopg2.connect("dbname=voordeelschoptest user=postgres password=kip")
+conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 cur = conn.cursor()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~ code voor product koppeling

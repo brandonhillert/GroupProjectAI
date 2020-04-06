@@ -179,12 +179,14 @@ def createidlink():
     #een functie om een tabel aan temaken
     cur.execute("DROP TABLE IF EXISTS prolink;")
 
-    cur.execute("CREATE TABLE voordeelcatalgoritme (PID varchar  PRIMARY KEY, "
-                "pro1 varchar, "
-                "pro2 varchar, "
-                "pro3 varchar, "
-                "pro4 varchar, "
-                "pro5 varchar);")
+    cur.execute("drop table if exists voordeelcatalgoritme;")
+
+    cur.execute("CREATE TABLE voordeelcatalgoritme (id varchar  PRIMARY KEY, "
+                "product1 varchar, "
+                "product2 varchar, "
+                "product3 varchar, "
+                "product4 varchar, "
+                "product5 varchar);")
     return
 
 def fillidlinktable():
@@ -197,21 +199,21 @@ def fillidlinktable():
         recomendedlist = recomendeditems(itemrecords[0][1], itemrecords[0][2], itemrecords[0][3])
         #print("list met recomende id's", [i[0] for i in recomendedlist])
         if len(recomendedlist) == 5:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3,pro4,pro5) VALUES ( %s, %s, %s, %s,%s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0],recomendedlist[4][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID, product1, product2, product3,product4,product5) VALUES ( %s, %s, %s, %s,%s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0],recomendedlist[4][0]))
         if len(recomendedlist) == 4:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3,pro4) VALUES ( %s, %s, %s, %s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID, product1, product2, product3,product4) VALUES ( %s, %s, %s, %s,%s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0],recomendedlist[3][0]))
         if len(recomendedlist) == 3:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2, pro3) VALUES ( %s, %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID, product1, product2, product3) VALUES ( %s, %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0], recomendedlist[2][0]))
         if len(recomendedlist) == 2:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1, pro2) VALUES ( %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID, product1, product2) VALUES ( %s, %s, %s)",(id, recomendedlist[0][0], recomendedlist[1][0]))
         if len(recomendedlist) == 1:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID, pro1) VALUES ( %s, %s)",(id, recomendedlist[0][0]))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID, product1) VALUES ( %s, %s)",(id, recomendedlist[0][0]))
         if len(recomendedlist) == 0:
-            cur.execute("INSERT INTO voordeelcatalgoritme (PID) VALUES ( %s)",(id))
+            cur.execute("INSERT INTO voordeelcatalgoritme (ID) VALUES ( %s)",(id))
     print("finnisched filling product table")
     return
 
-conn = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=kip")
+conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 cur = conn.cursor()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~ code voor product koppeling
