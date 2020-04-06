@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import random
 
 """
-Opdracht: AI Group project Categorie-Algoritme
+Opdracht: AI Group project Categorie-Algoritme 2
 Author: Brandon Hillert
 """
 
@@ -13,62 +13,81 @@ db = client.huwebshop
 conn = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
 cur = conn.cursor()
 
-cur.execute("DROP TABLE IF EXISTS categorie_algoritme;")
 
-cur.execute("CREATE TABLE categorie_algoritme( id serial NOT NULL,"
-            "id_product varchar(45),"
-            "id_categorie varchar(45),"
-            "id_product_1 varchar(45),"
-            "id_product_2 varchar(45),"
-            "id_product_3 varchar(45),"
-            "CONSTRAINT categorie_algoritme_pk PRIMARY KEY (id)"
-            "  ) WITH ("
-            "   OIDS=FALSE"
-            ");")
-
-cur.execute("INSERT INTO categorie_algoritme(id_product, id_categorie)"
-            "SELECT id, catergory_idcatergory FROM product"
-            " ORDER BY id")
-
-cur.execute("SELECT id_product,id_categorie FROM categorie_algoritme")
-lijst_producten = cur.fetchall()
-
-"""
-Vanaf hieronder heb ik gister avond gemaakt
-Moet eigenlijk wel efficienter
-"""
-
-count = 0
-
-# Loopt door alle waardes die er zijn
-for product in lijst_producten:
-    product = list(product)
-
-    if product[0] == "38647-It'sglowtime":
-        product[0] = "38647-It''sglowtime"
+def create_table():
+    cur.execute("DROP TABLE IF EXISTS categorie_algoritme;")
+    cur.execute('CREATE TABLE categorie_algoritme ('
+                'id varchar PRIMARY KEY,'
+                'product1 varchar,'
+                'product2 varchar,'
+                'product3 varchar,'
+                'product4 varchar,'
+                'product5 varchar);')
+    conn.commit()
 
 
-    # selecteerd per product alle items waar de idcategorie gelijk aan is, maar het id wel verschillend
-    cur.execute(
-        "SELECT id_product,id_categorie FROM categorie_algoritme"
-        " WHERE id_categorie = '{}' AND id_product != '{}' ".format(product[1], product[0])
-    )
+def categorie_algoritme(product, categorie):
+    #Query die alle ids ophaalt waar die id != product en category_idcatergory = categorie
+    cur.execute("SELECT id FROM product"
+                " WHERE catergory_idcatergory = {} AND id != '{}'".format(categorie, product)
+                )
     lijst = cur.fetchall()
 
-    try:
-        # kiest een random waarde uit die lijst
-        random_waarde = random.randint(0, (len(lijst) - 1))
-        random_product = lijst[random_waarde]
+    #Stopt alle id's in een lijst, en haalt daar 5 willekeurige waardes uit
+    lijst_producten = []
+    for i in lijst:
+        list(i)
+        lijst_producten.append(i[0])
 
-        # Resultaat is het random gekozen product
-        cur.execute(
-            "UPDATE categorie_algoritme SET id_product_1 = '{}' WHERE id = '{}';".format(random_product[0], product[1]))
-    except:
-        print("Error")
+    if len(lijst_producten) < 5:
+        return [product, product, product, product, product, product]
+    else:
+        random_waarde = random.randint(0, (len(lijst_producten) - 1))
+        prod1 = lijst_producten[random_waarde]
 
-    count += 1
-    if count % 1000 == 0:
-        print(count, "producten")
+        random_waarde = random.randint(0, (len(lijst_producten) - 1))
+        prod2 = lijst_producten[random_waarde]
 
-print("done with producten")
-conn.commit()
+        random_waarde = random.randint(0, (len(lijst_producten) - 1))
+        prod3 = lijst_producten[random_waarde]
+
+        random_waarde = random.randint(0, (len(lijst_producten) - 1))
+        prod4 = lijst_producten[random_waarde]
+
+        random_waarde = random.randint(0, (len(lijst_producten) - 1))
+        prod5 = lijst_producten[random_waarde]
+
+        return [product, prod1, prod2, prod3, prod4, prod5]
+
+
+def fill_table():
+    cur.execute('SELECT id,catergory_idcatergory FROM product')
+    lijst_producten = cur.fetchall()
+
+    count = 0
+
+    for ids in lijst_producten:
+        product = list(ids)
+
+        if product[0] == "38647-It'sglowtime":
+            product[0] = "38647-It''sglowtime"
+
+        lijst_prods = categorie_algoritme(product[0], product[1])
+
+        try:
+            cur.execute("INSERT INTO categorie_algoritme(id, product1, product2, product3, product4, product5)"
+                        "VALUES ('{}','{}','{}','{}','{}','{}')".format(lijst_prods[0], lijst_prods[1], lijst_prods[2],
+                                                                        lijst_prods[3], lijst_prods[4], lijst_prods[5]))
+        except:
+            print(product[0], product[1])
+        conn.commit()
+
+        count += 1
+        if count % 1000 == 0:
+            print(count, "producten")
+
+    print("Producten zijn ingeladen")
+
+
+create_table()
+fill_table()

@@ -68,7 +68,7 @@ def create_prijs_aanbevelingen():
     con.commit()
 
 
-con = psycopg2.connect("dbname=postgres user=postgres password=postgres")
+con = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
 cur = con.cursor()
 
 cur.execute("select id, selling_price from product where selling_price < 101")
