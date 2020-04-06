@@ -11,7 +11,7 @@ Definitieve versie Categorie Algoritme
 client = MongoClient('localhost', 27017)
 
 db = client.huwebshop
-conn = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
+conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 cur = conn.cursor()
 
 
@@ -30,7 +30,7 @@ def create_table():
 def categorie_algoritme(product, categorie):
     #Query die alle ids ophaalt waar die id != product en category_idcatergory = categorie
     cur.execute("SELECT id FROM product"
-                " WHERE catergory_idcatergory = {} AND id != '{}'".format(categorie, product)
+                " WHERE category_idcategory = {} AND id != '{}'".format(categorie, product)
                 )
     lijst = cur.fetchall()
 
@@ -62,7 +62,7 @@ def categorie_algoritme(product, categorie):
 
 
 def fill_table():
-    cur.execute('SELECT id,catergory_idcatergory FROM product')
+    cur.execute('SELECT id, category_idcategory FROM product')
     lijst_producten = cur.fetchall()
 
     count = 0
