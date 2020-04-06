@@ -59,16 +59,16 @@ def prijs(id,prijs_prod):
 def create_prijs_aanbevelingen():
     cur.execute('DROP TABLE IF EXISTS Prijs_aanbevelingen;')
 
-    cur.execute('CREATE TABLE Prijs_aanbevelingen (Prod_id varchar PRIMARY KEY,'
-                'PROD1 varchar,'
-                'PROD2 varchar,'
-                'PROD3 varchar,'
-                'PROD4 varchar,'
-                'PROD5 varchar);')
+    cur.execute('CREATE TABLE Prijs_aanbevelingen (id varchar PRIMARY KEY,'
+                'PRODUCT1 varchar,'
+                'PRODUCT2 varchar,'
+                'PRODUCT3 varchar,'
+                'PRODUCT4 varchar,'
+                'PRODUCT5 varchar);')
     con.commit()
 
 
-con = psycopg2.connect("dbname=postgres user=postgres password=postgres")
+con = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 cur = con.cursor()
 
 cur.execute("select id, selling_price from product where selling_price < 101")
@@ -95,7 +95,7 @@ for id in id_price:
     recids = prijs(id[0],id[1])
     print(recids[0])
     try:
-        cur.execute("INSERT INTO Prijs_aanbevelingen (Prod_id, PROD1, PROD2, PROD3, PROD4,PROD5) VALUES ( %s, %s, %s, %s,%s,%s)",(recids[0], recids[1], recids[2], recids[3], recids[4],recids[5]))
+        cur.execute("INSERT INTO Prijs_aanbevelingen (id, PRODUCT1, PRODUCT2, PRODUCT3, PRODUCT4, PRODUCT5) VALUES ( %s, %s, %s, %s,%s,%s)",(recids[0], recids[1], recids[2], recids[3], recids[4],recids[5]))
     except:
         print("error", recids)
 
