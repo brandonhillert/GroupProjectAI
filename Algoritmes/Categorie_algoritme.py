@@ -5,6 +5,7 @@ import random
 """
 Opdracht: AI Group project Categorie-Algoritme 2
 Author: Brandon Hillert
+Definitieve versie Categorie Algoritme
 """
 
 client = MongoClient('localhost', 27017)
