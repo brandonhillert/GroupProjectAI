@@ -52,7 +52,7 @@ def dataimportmgdb():
                     "SELECT id FROM product where brand_idbrand = {} ORDER BY RANDOM() LIMIT 1;".format(brandnaam))
                 proid = cur.fetchall()
                 # print(proid[0][0])
-                preferenceval = proid[0][0]
+                preferenceval = "{" + proid[0][0] + "}"
 
                 '''
                 preference = i['preferences']['brand']
@@ -368,31 +368,37 @@ def fkmaker():
     cur.execute("ALTER TABLE session ADD CONSTRAINT session_fk0 FOREIGN KEY (profile_id) REFERENCES profile(id);")
 
 def sessiontoprofile():
-    cur.execute("select buid,id from session where prefences != 'null'")
+    #cur.execute("select buid,id from session where prefences != 'null'")
+    cur.execute("select buid,prefences,itorder,id from session where prefences != '{}' or itorder !='{}' order by prefences desc")
     buids = cur.fetchall()
     count = 0
-    for buid in buids[:250]:
-        #print(buid[0][2:-2])
-        cur.execute("SELECT id FROM profile WHERE buids LIKE '%{}%'".format(buid[0][2:-2]))
+    print(len(buids))
+    for buid in buids[:3000]:
         try:
+            #print(buid[0][2:-2])
+            cur.execute("SELECT id FROM profile WHERE buids LIKE '%{}%'".format(buid[0][2:-2]))
+            if len(buids[0][1]) > 3:
+                recommendation = buids[0][1]
+            else:
+                recommendation = buids[0][2]
             profid = cur.fetchall()[0][0]
-            sesid = buid[1]
-            #print("profid",profid)
-            #print("id",sesid)
+            sesid = buid[3]
             cur.execute("UPDATE session SET profile_id = '{}' WHERE id = '{}';".format(profid,sesid))
+            cur.execute("UPDATE profile SET recommendations = '{}' WHERE id = '{}'; ".format(recommendation,profid))
         except:
             print("Error","profid",profid,"id",sesid)
             #print("id",sesid)
         count += 1
         if count % 50 == 0:
             print(count, "profiles linked")
+
     print("done with profile-link")
 
 
 client = MongoClient('localhost', 27017)    #MongodB connectie
 db = client.huwebshop
 
-conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
+conn = psycopg2.connect("dbname=voordeelschoptest user=postgres password=kip")
 cur = conn.cursor()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~ code voor product koppeling
@@ -408,8 +414,6 @@ fkmaker()
 
 sessiontoprofile()
 
-#~~~~~~~~~~~~~~~~~~~~~~~~ code voor profil koppeling
-#getsegmenttypes()
 
 # Make the changes to the database persistent
 conn.commit()
