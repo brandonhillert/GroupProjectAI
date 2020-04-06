@@ -12,7 +12,6 @@ def brandrecommendation(prodid):
         else:
             continue
 
-
     for item in ids:
         if item[0] == prodid:
             continue
@@ -43,16 +42,15 @@ connect = psycopg2.connect("dbname=voordeelshopgpx user=postgres password=pgadmi
 c = connect.cursor()
 print("postgres connected")
 
-c.execute("DROP TABLE IF EXISTS brandrecommendations CASCADE")
-c.execute("CREATE TABLE brandrecommendations (id VARCHAR PRIMARY KEY, "
-          "product1 VARCHAR, product2 VARCHAR, product3 VARCHAR, product4 VARCHAR, product5 VARCHAR);")
+#c.execute("DROP TABLE IF EXISTS brandrecommendations CASCADE")
+#c.execute("CREATE TABLE brandrecommendations (id VARCHAR PRIMARY KEY, "
+#          "product1 VARCHAR, product2 VARCHAR, product3 VARCHAR, product4 VARCHAR, product5 VARCHAR);")
 
 c.execute("select id, brand_idbrand from product")
 ids = c.fetchall()
 
 counter = 0
 
-print(recs)
 for id in ids:
     brandrecommendation(id[0])
     counter += 1
