@@ -63,7 +63,6 @@ for product in lijst_producten:
         # Resultaat is het random gekozen product
         cur.execute(
             "UPDATE categorie_algoritme SET id_product_1 = '{}' WHERE id = '{}';".format(random_product[0], product[1]))
-
     except:
         print("Error")
 
