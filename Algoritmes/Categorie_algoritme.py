@@ -40,7 +40,7 @@ def categorie_algoritme(product, categorie):
         list(i)
         lijst_producten.append(i[0])
 
-    if len(lijst_producten) < 5:
+    if len(lijst_producten) < 3:
         return [product, product, product, product, product, product]
     else:
         random_waarde = random.randint(0, (len(lijst_producten) - 1))
