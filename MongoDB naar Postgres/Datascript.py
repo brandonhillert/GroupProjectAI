@@ -25,7 +25,8 @@ def dataimportmgdb():
 
     cur.execute("CREATE TABLE all_pro (_ID varchar PRIMARY KEY, "
                 "buids varchar,"
-                "recommendations varchar);")
+                "recommendations varchar,"
+                "viewed_before varchar);")
     col = db.products
     products = col.find()
     count = 0
@@ -54,9 +55,10 @@ def dataimportmgdb():
     profiles = col.find()
     count = 0
     for i in profiles:
-        cur.execute("INSERT INTO all_pro (_ID, buids, recommendations) VALUES (%s, %s, %s)",
+        cur.execute("INSERT INTO all_pro (_ID, buids, recommendations,viewed_before) VALUES (%s, %s, %s,%s)",
                     (str(i['_id']),
                      i['buids'] if 'buids' in i else None,
+                     "{}",
                      i['recommendations']['viewed_before'] if 'recommendations' in i else None))
         count += 1
         if count % 1000 == 0:
@@ -332,17 +334,17 @@ def sessiontoprofile():
     cur.execute("select buid,id from session where prefences != 'null'")
     buids = cur.fetchall()
     count = 0
-    for buid in buids[:250]:
+    for buid in buids[:2000]:
         #print(buid[0][2:-2])
-        cur.execute("SELECT id FROM profile WHERE buids LIKE '%{}%'".format(buid[0][2:-2]))
         try:
+            cur.execute("SELECT id FROM profile WHERE buids LIKE '%{}%'".format(buid[0][2:-2]))
             profid = cur.fetchall()[0][0]
             sesid = buid[1]
             #print("profid",profid)
             #print("id",sesid)
             cur.execute("UPDATE session SET profile_id = '{}' WHERE id = '{}';".format(profid,sesid))
         except:
-            print("Error","profid",profid,"id",sesid)
+            print("Error")
             #print("id",sesid)
         count += 1
         if count % 50 == 0:
@@ -353,7 +355,7 @@ def sessiontoprofile():
 client = MongoClient('localhost', 27017)    #MongodB connectie
 db = client.huwebshop
 
-conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
+conn = psycopg2.connect("dbname=vdshoptest user=postgres password=kip")
 cur = conn.cursor()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~ code voor product koppeling
@@ -364,7 +366,9 @@ searchitems = createrecomendeditemsrecords()
 
 clearerd()
 filldata()
+conn.commit()
 queuedata()
+conn.commit()
 fkmaker()
 
 sessiontoprofile()
