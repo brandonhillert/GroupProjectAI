@@ -334,7 +334,7 @@ def sessiontoprofile():
     cur.execute("select buid,id from session where prefences != 'null'")
     buids = cur.fetchall()
     count = 0
-    for buid in buids[:2000]:
+    for buid in buids[:1000]:
         #print(buid[0][2:-2])
         try:
             cur.execute("SELECT id FROM profile WHERE buids LIKE '%{}%'".format(buid[0][2:-2]))
@@ -366,9 +366,7 @@ searchitems = createrecomendeditemsrecords()
 
 clearerd()
 filldata()
-conn.commit()
 queuedata()
-conn.commit()
 fkmaker()
 
 sessiontoprofile()
