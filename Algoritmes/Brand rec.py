@@ -1,7 +1,7 @@
 import psycopg2
 
 """
-Opdracht: AI Group project Categorie-Algoritme 2
+Opdracht: AI Group project brand-Algoritme
 Author: Julian van der Geest
 Definitieve versie Brand Algoritme
 """
@@ -9,22 +9,22 @@ Definitieve versie Brand Algoritme
 def insert_into_table(reclist):
     if len(reclist) >= 5:
         c.execute(
-            "INSERT INTO brandrecommendations (id, product1, product2, product3, product4, product5) VALUES (%s, %s, %s, %s, %s, %s)",
+            "INSERT INTO brandalgoritme (id, product1, product2, product3, product4, product5) VALUES (%s, %s, %s, %s, %s, %s)",
             (prodid, reclist[0], reclist[1], reclist[2], reclist[3], reclist[4]))
     elif len(reclist) == 4:
         c.execute(
-            "INSERT INTO brandrecommendations (id, product1, product2, product3, product4) VALUES ( %s, %s, %s, %s,%s)",
+            "INSERT INTO brandalgoritme (id, product1, product2, product3, product4) VALUES ( %s, %s, %s, %s,%s)",
             (prodid, reclist[0], reclist[1], reclist[2], reclist[3]))
     elif len(reclist) == 3:
-        c.execute("INSERT INTO brandrecommendations (id, product1, product2, product3) VALUES ( %s, %s, %s, %s)",
+        c.execute("INSERT INTO brandalgoritme (id, product1, product2, product3) VALUES ( %s, %s, %s, %s)",
                   (prodid, reclist[0], reclist[1], reclist[2]))
     elif len(reclist) == 2:
-        c.execute("INSERT INTO brandrecommendations (id, product1, product2) VALUES ( %s, %s, %s)",
+        c.execute("INSERT INTO brandalgoritme (id, product1, product2) VALUES ( %s, %s, %s)",
                   (prodid, reclist[0], reclist[1]))
     elif len(reclist) == 1:
-        c.execute("INSERT INTO brandrecommendations (id, product1) VALUES ( %s, %s)", (prodid, reclist[0]))
+        c.execute("INSERT INTO brandalgoritme (id, product1) VALUES ( %s, %s)", (prodid, reclist[0]))
     elif len(reclist) == 0:
-        c.execute("INSERT INTO brandrecommendations (id) VALUES ( %s)", (prodid))
+        c.execute("INSERT INTO brandalgoritme (id) VALUES ( %s)", (prodid))
     return
 
 def brandrecommendation(prodid):
@@ -54,8 +54,8 @@ connect = psycopg2.connect("dbname=voordeelshopgpx user=postgres password=pgadmi
 c = connect.cursor()
 print("postgres connected")
 
-c.execute("DROP TABLE IF EXISTS brandrecommendations CASCADE")
-c.execute("CREATE TABLE brandrecommendations (id VARCHAR PRIMARY KEY, "
+c.execute("DROP TABLE IF EXISTS brandalgoritme CASCADE")
+c.execute("CREATE TABLE brandalgoritme (id VARCHAR PRIMARY KEY, "
           "product1 VARCHAR, product2 VARCHAR, product3 VARCHAR, product4 VARCHAR, product5 VARCHAR);")
 
 c.execute("select id, brand_idbrand from product")
