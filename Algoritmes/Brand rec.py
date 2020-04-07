@@ -1,5 +1,26 @@
 import psycopg2
 
+def insert_into_table(reclist):
+    if len(reclist) >= 5:
+        c.execute(
+            "INSERT INTO brandrecommendations (id, product1, product2, product3, product4, product5) VALUES (%s, %s, %s, %s, %s, %s)",
+            (prodid, reclist[0], reclist[1], reclist[2], reclist[3], reclist[4]))
+    elif len(reclist) == 4:
+        c.execute(
+            "INSERT INTO brandrecommendations (id, product1, product2, product3, product4) VALUES ( %s, %s, %s, %s,%s)",
+            (prodid, reclist[0], reclist[1], reclist[2], reclist[3]))
+    elif len(reclist) == 3:
+        c.execute("INSERT INTO brandrecommendations (id, product1, product2, product3) VALUES ( %s, %s, %s, %s)",
+                  (prodid, reclist[0], reclist[1], reclist[2]))
+    elif len(reclist) == 2:
+        c.execute("INSERT INTO brandrecommendations (id, product1, product2) VALUES ( %s, %s, %s)",
+                  (prodid, reclist[0], reclist[1]))
+    elif len(reclist) == 1:
+        c.execute("INSERT INTO brandrecommendations (id, product1) VALUES ( %s, %s)", (prodid, reclist[0]))
+    elif len(reclist) == 0:
+        c.execute("INSERT INTO brandrecommendations (id) VALUES ( %s)", (prodid))
+    return
+
 def brandrecommendation(prodid):
     prodid = str(prodid)
     reclist = []
@@ -18,22 +39,7 @@ def brandrecommendation(prodid):
         elif item[1] == prodidbrand:
             reclist.append(item[0])
     try:
-        if len(reclist) >= 5:
-            c.execute("INSERT INTO brandrecommendations (id, product1, product2, product3, product4, product5) VALUES (%s, %s, %s, %s, %s, %s)",
-                        (prodid, reclist[0], reclist[1], reclist[2], reclist[3], reclist[4]))
-        elif len(reclist) == 4:
-            c.execute("INSERT INTO brandrecommendations (id, product1, product2, product3, product4) VALUES ( %s, %s, %s, %s,%s)",
-                        (prodid, reclist[0], reclist[1], reclist[2], reclist[3]))
-        elif len(reclist) == 3:
-            c.execute("INSERT INTO brandrecommendations (id, product1, product2, product3) VALUES ( %s, %s, %s, %s)",
-                        (prodid, reclist[0], reclist[1], reclist[2]))
-        elif len(reclist) == 2:
-            c.execute("INSERT INTO brandrecommendations (id, product1, product2) VALUES ( %s, %s, %s)",
-                        (prodid, reclist[0], reclist[1]))
-        elif len(reclist) == 1:
-            c.execute("INSERT INTO brandrecommendations (id, product1) VALUES ( %s, %s)", (prodid, reclist[0]))
-        elif len(reclist) == 0:
-            c.execute("INSERT INTO brandrecommendations (id) VALUES ( %s)", (prodid))
+        insert_into_table(reclist)
     except:
         pass
     return
@@ -59,5 +65,5 @@ for id in ids:
 
 print("Table filled")
 
-connect.commit()
+#connect.commit()
 c.close()

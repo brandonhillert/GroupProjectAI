@@ -75,7 +75,7 @@ def dataimportmgdb():
                 orderstring = "{}"
 
             cur.execute(
-                "INSERT INTO all_se (_ID, buid, has_sale, preferences,itorder,segment) VALUES (%s, %s,%s,%s,%s,%s)",
+                "INSERT INTO all_se (_ID, buid, has_sale, preferences, itorder, segment) VALUES (%s, %s,%s,%s,%s,%s)",
                 (str(i['_id']),
                  str(i['buid']) if 'buid' in i else None,
                  str(i['has_sale']) if 'has_sale' in i else None,
@@ -321,10 +321,10 @@ def queuedata():
             subcategory = "Baby\''s en kinderen"
         if category == "['Make-up & geuren', 'Make-up', 'Nagellak']":
             category = "[\''Make-up & geuren\'', \''Make-up\'', \''Nagellak\'']"
-        if subsubcategory =="Vibrators en dildo's":
+        if subsubcategory == "Vibrators en dildo's":
             subsubcategory = "Vibrators en dildo\''s"
 
-        cur.execute("select * from category where category = '{}' and sub_category = '{}' and sub_sub_category = '{}';".format(category,subcategory,subsubcategory))
+        cur.execute("select * from category where category = '{}' and sub_category = '{}' and sub_sub_category = '{}';".format(category, subcategory, subsubcategory))
         try:
             catid = cur.fetchall()[0][0]
         except:
@@ -352,7 +352,7 @@ def queuedata():
         productrecord = [itemid,selling_price,genderid,brandid,itemrecords[0][7],catid]
 
         try:
-            cur.execute("INSERT INTO product(id,selling_price,brand_idbrand,gender_idgender,discount,category_idcategory) VALUES ('{}','{}','{}','{}','{}','{}')".format(productrecord[0],productrecord[1],productrecord[3],productrecord[2],productrecord[4],productrecord[5]))
+            cur.execute("INSERT INTO product(id, selling_price, brand_idbrand, gender_idgender, discount, category_idcategory) VALUES ('{}','{}','{}','{}','{}','{}')".format(productrecord[0],productrecord[1],productrecord[3],productrecord[2],productrecord[4],productrecord[5]))
         except:
             print((productrecord[1]))
             productrecord(type(productrecord[1]))
