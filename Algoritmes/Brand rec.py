@@ -1,5 +1,11 @@
 import psycopg2
 
+"""
+Opdracht: AI Group project Categorie-Algoritme 2
+Author: Julian van der Geest
+Definitieve versie Brand Algoritme
+"""
+
 def insert_into_table(reclist):
     if len(reclist) >= 5:
         c.execute(
@@ -48,9 +54,9 @@ connect = psycopg2.connect("dbname=voordeelshopgpx user=postgres password=pgadmi
 c = connect.cursor()
 print("postgres connected")
 
-#c.execute("DROP TABLE IF EXISTS brandrecommendations CASCADE")
-#c.execute("CREATE TABLE brandrecommendations (id VARCHAR PRIMARY KEY, "
-#          "product1 VARCHAR, product2 VARCHAR, product3 VARCHAR, product4 VARCHAR, product5 VARCHAR);")
+c.execute("DROP TABLE IF EXISTS brandrecommendations CASCADE")
+c.execute("CREATE TABLE brandrecommendations (id VARCHAR PRIMARY KEY, "
+          "product1 VARCHAR, product2 VARCHAR, product3 VARCHAR, product4 VARCHAR, product5 VARCHAR);")
 
 c.execute("select id, brand_idbrand from product")
 ids = c.fetchall()
@@ -65,5 +71,5 @@ for id in ids:
 
 print("Table filled")
 
-#connect.commit()
+connect.commit()
 c.close()
