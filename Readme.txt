@@ -1,3 +1,25 @@
+How to Run
+Setup DB
+  1. run GroupProjectAI/MongoDB naar Postgres/Datascript.py
+  2. run GroupProjectAI/MongoDB naar LinkSessionToProfCat.py
+
+Setup Algortimes tables
+  3.run GroupProjectAI/Algoritmes/Brand rec.py
+  4.run GroupProjectAI/Algoritmes/Categorie_algoritme.py
+  5.run GroupProjectAI/Algoritmes/Prijsalgoritme.py
+  6.run GroupProjectAI/Algoritmes/voordeelcategorieAlgoritme.py
+  
+Recommendation table conversion
+  7. run GroupProjectAI/Website/data_omzetten_bruikbare_table.py
+  
+Website hosting
+*controleer file path in bat files
+  8. run GroupProjectAI/Website/Run Huwebshop/Klik mij 1st.bat
+  9. run GroupProjectAI/Website/Run Huwebshop/Klik mij als 2e.bat
+
+
+Mappen structuur
+
 Algoritmes folder
   Brand rec.py
     -Definitieve versie Brand Algoritme
