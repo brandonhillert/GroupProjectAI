@@ -1,120 +1,98 @@
 import psycopg2
-import random
 
 """
-Gemaakt door: Wijnand van Dijk en Richard Jansen.
-Wijnand van Dijk: Core code
-Richard Jansen: Overzetten naar SQL tabel
+Opdracht: AI Group project brand-Algoritme
+Author: Julian van der Geest
+Definitieve versie Brand Algoritme
+Functionele decompositie: Brandon Hillert
 """
-
-con = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
-cur = con.cursor()
-
-"""
-Globale variabelen voor een snellere werking van het programma
-"""
-
-cur.execute("select id, selling_price from product where selling_price < 101")
-very_cheap = cur.fetchall()
-
-cur.execute("select id, selling_price from product where selling_price > 100 and selling_price < 251")
-cheap = cur.fetchall()
-
-cur.execute("select id, selling_price from product where selling_price > 250 and selling_price < 501")
-middle = cur.fetchall()
-
-cur.execute("select id, selling_price from product where selling_price > 500 and selling_price < 751")
-expensive = cur.fetchall()
-
-cur.execute("select id, selling_price from product where selling_price > 750")
-more_expensive = cur.fetchall()
+connect = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
+c = connect.cursor()
+print("postgres connected")
 
 """
-Functie voor aanmaken Postgres DB tabel
+Functie voor het aanmaken Postgres DB tabel
 """
+def create_table():
+    c.execute("DROP TABLE IF EXISTS brandalgoritme CASCADE")
+    c.execute("CREATE TABLE brandalgoritme (id VARCHAR PRIMARY KEY, "
+              "product1 VARCHAR, "
+              "product2 VARCHAR, "
+              "product3 VARCHAR, "
+              "product4 VARCHAR, "
+              "product5 VARCHAR);")
 
 
-def create_prijs_aanbevelingen():
-    cur.execute('DROP TABLE IF EXISTS Prijs_aanbevelingen;')
-    cur.execute('CREATE TABLE Prijs_aanbevelingen (id varchar PRIMARY KEY,'
-                'PRODUCT1 varchar,'
-                'PRODUCT2 varchar,'
-                'PRODUCT3 varchar,'
-                'PRODUCT4 varchar,'
-                'PRODUCT5 varchar);')
-    con.commit()
+
+""""
+Functie die een lijst met alle mogelijke producten ophaalt die dezelfde brand hebben
+Vervolgens kiest de functie 5 waardes uit
+Met een insert into statement wordt de data ingeladen
+"""
+def brand_recommendation(productid, brandid):
+    c.execute("SELECT id FROM product"
+              " WHERE brand_idbrand = {} AND id != '{}'".format(brandid, productid)
+              )
+    lijst_mogelijkheden = c.fetchall()
+
+    lijst_producten = []
+    for i in lijst_mogelijkheden:
+        list(i)
+        lijst_producten.append(i[0])
+
+    if len(lijst_producten) >= 5:
+        c.execute(
+            "INSERT INTO brandalgoritme (id, product1, product2, product3, product4, product5) VALUES (%s, %s, %s, %s, %s, %s)",
+            (productid, lijst_producten[0], lijst_producten[1], lijst_producten[2], lijst_producten[3],
+             lijst_producten[4]))
+        connect.commit()
+
+    elif len(lijst_producten) == 4:
+        c.execute(
+            "INSERT INTO brandalgoritme (id, product1, product2, product3, product4) VALUES ( %s, %s, %s, %s,%s)",
+            (productid, lijst_producten[0], lijst_producten[1], lijst_producten[2], lijst_producten[3]))
+        connect.commit()
+
+    elif len(lijst_producten) == 3:
+        c.execute("INSERT INTO brandalgoritme (id, product1, product2, product3) VALUES ( %s, %s, %s, %s)",
+                  (productid, lijst_producten[0], lijst_producten[1], lijst_producten[2]))
+        connect.commit()
+
+    elif len(lijst_producten) == 2:
+        c.execute("INSERT INTO brandalgoritme (id, product1, product2) VALUES ( %s, %s, %s)",
+                  (productid, lijst_producten[0], lijst_producten[1]))
+        connect.commit()
+
+    elif len(lijst_producten) == 1:
+        c.execute("INSERT INTO brandalgoritme (id, product1) VALUES ( %s, %s)", (productid, lijst_producten[0]))
+        connect.commit()
+
+    elif len(lijst_producten) == 0:
+        c.execute("INSERT INTO brandalgoritme (id) VALUES ('{}')".format(productid))
+        connect.commit()
+    return
 
 
-def prijs(id, prijs_prod):
-    if prijs_prod < 101:
-        """
-        print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(very_cheap)[0],
-                                                                                           random.choice(very_cheap)[0],
-                                                                                           random.choice(very_cheap)[0],
-                                                                                           random.choice(very_cheap)[0],
-                                                                                           random.choice(very_cheap)[0]))
-        """
-        return [id, random.choice(very_cheap)[0], random.choice(very_cheap)[0], random.choice(very_cheap)[0],
-                random.choice(very_cheap)[0], random.choice(very_cheap)[0]]
-    elif 100 < prijs_prod < 251:
-        """
-        print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(cheap)[0],
-                                                                                           random.choice(cheap)[0],
-                                                                                           random.choice(cheap)[0],
-                                                                                           random.choice(cheap)[0],
-                                                                                           random.choice(cheap)[0]))
-        """
-        return [id, random.choice(cheap)[0], random.choice(cheap)[0], random.choice(cheap)[0], random.choice(cheap)[0],
-                random.choice(cheap)[0]]
-    elif 250 < prijs_prod < 501:
-        """
-        print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(middle)[0],
-                                                                                           random.choice(middle)[0],
-                                                                                           random.choice(middle)[0],
-                                                                                           random.choice(middle)[0],
-                                                                                           random.choice(middle)[0]))
-        """
-        return [id, random.choice(middle)[0], random.choice(middle)[0], random.choice(middle)[0],
-                random.choice(middle)[0], random.choice(middle)[0]]
-    elif 500 < prijs_prod < 751:
-        """
-        print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(expensive)[0],
-                                                                                           random.choice(expensive)[0],
-                                                                                           random.choice(expensive)[0],
-                                                                                           random.choice(expensive)[0],
-                                                                                           random.choice(expensive)[0]))
-        """
-        return [id, random.choice(expensive)[0], random.choice(expensive)[0], random.choice(expensive)[0],
-                random.choice(expensive)[0], random.choice(expensive)[0]]
-    elif prijs_prod > 750:
-        """
-        print("Uw aanbevolen producten inclusief de prijzen zijn {} {} {} {} en {}".format(random.choice(more_expensive)[0],
-                                                                                           random.choice(more_expensive)[0],
-                                                                                           random.choice(more_expensive)[0],
-                                                                                           random.choice(more_expensive)[0],
-                                                                                           random.choice(more_expensive)[0]))
-        """
-        return [id, random.choice(more_expensive)[0], random.choice(more_expensive)[0],
-                random.choice(more_expensive)[0], random.choice(more_expensive)[0], random.choice(more_expensive)[0]]
-
-
+"""
+Deze tabel zorgt ervoor dat alle waardes worden ingeladen
+Maakt gebruikt van prijs() om te bepalen wat er in komt
+"""
 def fill_table():
-    create_prijs_aanbevelingen()
-
-    cur.execute("select id,selling_price from product")
-    id_price = cur.fetchall()
+    c.execute("select id, brand_idbrand from product")
+    producten_lijst = c.fetchall()
 
     counter = 0
 
-    for id in id_price:
-        recids = prijs(id[0], id[1])
+    for product in producten_lijst:
 
-        try:
-            cur.execute(
-                "INSERT INTO Prijs_aanbevelingen (id, PRODUCT1, PRODUCT2, PRODUCT3, PRODUCT4, PRODUCT5) VALUES ( %s, %s, %s, %s,%s,%s)",
-                (recids[0], recids[1], recids[2], recids[3], recids[4], recids[5]))
-        except:
-            print("error", recids)
+        product_id = product[0]
+        brand_id = product[1]
+
+        if product_id == "38647-It'sglowtime":
+            product_id = "38647-It''sglowtime"
+
+        # Voert for iedere product in productenlijst de functie brand_recommendation uit
+        brand_recommendation(product_id, brand_id)
 
         counter += 1
         if counter % 1000 == 0:
@@ -122,13 +100,9 @@ def fill_table():
 
     print("Table filled")
 
-    con.commit()
-
-
 def main_loop():
-    create_prijs_aanbevelingen()
+    create_table()
     fill_table()
-    cur.close()
-
+    c.close()
 
 main_loop()
