@@ -5,7 +5,7 @@ Opdracht: AI Group project brand-Algoritme
 Author: Julian van der Geest
 Definitieve versie Brand Algoritme
 """
-connect = psycopg2.connect("dbname=voordeelshoponescript user=postgres password=admin")
+connect = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 c = connect.cursor()
 print("postgres connected")
 
@@ -83,13 +83,13 @@ def fill_table():
 
         counter += 1
         if counter % 1000 == 0:
-            print(counter, "/34000 producten zijn ingeladen")
+            print(counter, "/ 34000 producten zijn ingeladen")
 
     print("Table filled")
 
-def main_loop():
+def main():
     create_table()
     fill_table()
     c.close()
 
-main_loop()
+main()
