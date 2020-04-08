@@ -1,5 +1,4 @@
 import psycopg2
-from pymongo import MongoClient
 import random
 
 """
@@ -8,9 +7,6 @@ Author: Brandon Hillert
 Definitieve versie Categorie Algoritme
 """
 
-client = MongoClient('localhost', 27017)
-
-db = client.huwebshop
 conn = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 cur = conn.cursor()
 
