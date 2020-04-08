@@ -4,12 +4,15 @@ import psycopg2
 Opdracht: AI Group project brand-Algoritme
 Author: Julian van der Geest
 Definitieve versie Brand Algoritme
+Functionele decompositie: Brandon Hillert
 """
 connect = psycopg2.connect("user=postgres password=pgadminJTgeest dbname=voordeelshopgpx")
 c = connect.cursor()
 print("postgres connected")
 
-
+"""
+Functie voor het aanmaken Postgres DB tabel
+"""
 def create_table():
     c.execute("DROP TABLE IF EXISTS brandalgoritme CASCADE")
     c.execute("CREATE TABLE brandalgoritme (id VARCHAR PRIMARY KEY, "
@@ -20,6 +23,12 @@ def create_table():
               "product5 VARCHAR);")
 
 
+
+""""
+Functie die een lijst met alle mogelijke producten ophaalt die dezelfde brand hebben
+Vervolgens kiest de functie 5 waardes uit
+Met een insert into statement wordt de data ingeladen
+"""
 def brand_recommendation(productid, brandid):
     c.execute("SELECT id FROM product"
               " WHERE brand_idbrand = {} AND id != '{}'".format(brandid, productid)
@@ -64,6 +73,10 @@ def brand_recommendation(productid, brandid):
     return
 
 
+"""
+Deze tabel zorgt ervoor dat alle waardes worden ingeladen
+Maakt gebruikt van prijs() om te bepalen wat er in komt
+"""
 def fill_table():
     c.execute("select id, brand_idbrand from product")
     producten_lijst = c.fetchall()
